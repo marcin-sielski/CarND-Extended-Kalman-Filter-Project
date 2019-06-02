@@ -110,15 +110,16 @@ int main() {
           // Call ProcessMeasurement(meas_package) for Kalman filter
           fusionEKF.ProcessMeasurement(meas_package);       
 
-          // Push the current estimated x,y positon from the Kalman filter's 
-          //   state vector
+          // Push the current estimated x,y position from the Kalman filter's
+          // state vector
 
           VectorXd estimate(4);
 
-          double p_x = fusionEKF.ekf_.x_(0);
-          double p_y = fusionEKF.ekf_.x_(1);
-          double v1  = fusionEKF.ekf_.x_(2);
-          double v2 = fusionEKF.ekf_.x_(3);
+          VectorXd &x = fusionEKF.GetState();
+          double p_x = x(0);
+          double p_y = x(1);
+          double v1  = x(2);
+          double v2 = x(3);
 
           estimate(0) = p_x;
           estimate(1) = p_y;
@@ -127,7 +128,7 @@ int main() {
         
           estimations.push_back(estimate);
 
-          VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+          VectorXd RMSE = Tools::CalculateRMSE(estimations, ground_truth);
 
           json msgJson;
           msgJson["estimate_x"] = p_x;
@@ -156,7 +157,6 @@ int main() {
 
   h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code, 
                          char *message, size_t length) {
-    ws.close();
     std::cout << "Disconnected" << std::endl;
   });
 

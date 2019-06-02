@@ -5,27 +5,41 @@
 #include "Eigen/Dense"
 
 class Tools {
+
  public:
-  /**
-   * Constructor.
-   */
-  Tools();
 
   /**
-   * Destructor.
+   * A helper method to calculate RMSE
+   * @param estimations estimations
+   * @param ground_truth ground truth
+   * @return root mean square error
    */
-  virtual ~Tools();
+  static Eigen::VectorXd CalculateRMSE(
+      const std::vector<Eigen::VectorXd> &estimations,
+      const std::vector<Eigen::VectorXd> &ground_truth);
 
   /**
-   * A helper method to calculate RMSE.
+   * A helper method to calculate Jacobians
+   * @param x_state state vector
+   * @return Jacobian
    */
-  Eigen::VectorXd CalculateRMSE(const std::vector<Eigen::VectorXd> &estimations, 
-                                const std::vector<Eigen::VectorXd> &ground_truth);
+  static Eigen::MatrixXd CalculateJacobian(const Eigen::VectorXd& x_state);
 
   /**
-   * A helper method to calculate Jacobians.
+   * A helper method to convert Polar coordinates to Cartesian coordinates
+   * @param x_state_polar Polar coordinates
+   * @return Cartesian coordinates
    */
-  Eigen::MatrixXd CalculateJacobian(const Eigen::VectorXd& x_state);
+  static Eigen::VectorXd ConvertPolarToCartesian(
+      const Eigen::VectorXd &x_state_polar);
+
+  /**
+   * A helper method to convert Cartesian coordinates to Polar coordinates
+   * @param x_state Cartesian coordinates
+   * @return Polar coordinates
+   */
+  static Eigen::VectorXd ConvertCartesionToPolar(
+      const Eigen::VectorXd &x_state);
 
 };
 
